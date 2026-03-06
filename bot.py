@@ -4,7 +4,6 @@ import json
 import re
 from pathlib import Path
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
@@ -65,7 +64,7 @@ async def helpMark(update: Update, context: ContextTypes.DEFAULT_TYPE):
 /guess <число> — угадай число от 1 до 10
 
 😂 Мемы и приколы:
-/mem — мем
+/mem — мем (только текст)
 /sosal — сосал
 /joke — шутка
 
@@ -182,15 +181,9 @@ async def guess(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ================== Мемы ==================
 memes=["КОГДА КОД РАБОТАЕТ","КОГДА НАШЕЛ БАГ","КОГДА СПАМ В ЧАТЕ","КОГДА ПРЕДПРОЕКТ ГОТОВ"]
 async def mem(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    img=Image.new("RGB",(500,300),(255,255,255))
-    draw=ImageDraw.Draw(img)
-    font=ImageFont.load_default()
-    draw.text((50,150),random.choice(memes),font=font,fill=(0,0,0))
-    bio=BytesIO()
-    bio.name="mem.png"
-    img.save(bio,"PNG")
-    bio.seek(0)
-    await update.message.reply_photo(bio)
+    """Отправляет случайный мем текстом (без PIL)"""
+    meme_text = random.choice(memes)
+    await update.message.reply_text(f"😂 {meme_text}")
 
 async def sosal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     target=update.message.reply_to_message.from_user.first_name if update.message.reply_to_message else user_name(update)
@@ -249,5 +242,5 @@ app.add_handler(CommandHandler("timeK",timeK))
 # Сообщения: калькулятор
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, calc))
 
-print("🚀 МЕГА-БОТ без ИИ с мини-играми, мемами и экономикой запущен!")
+print("🚀 МЕГА-БОТ без ИИ с мини-играми, мемами (текст) и экономикой запущен!")
 app.run_polling()
