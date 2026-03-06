@@ -3,3 +3,7 @@ pip install pillow
 pip install python-telegram-bot==20.3 pillow
 pip install aiogram
 pip install -r requirements.txt
+python-telegram-bot
+Pillow
+requests
+python-dotenv
