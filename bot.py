@@ -1,4 +1,7 @@
-import random, json, re
+import os
+import random
+import json
+import re
 from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
@@ -6,7 +9,14 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
 # ================== Настройки ==================
-TOKEN = "8162354321:AAE_b4lmuaqW0gZof3CEZ7G-_NOo0c4i_-o"
+# 🔐 Токен берётся из переменных окружения
+TOKEN = os.getenv("BOT_TOKEN")
+
+if not TOKEN:
+    print("🚨 ОШИБКА: Не задан токен бота!")
+    print("Создайте переменную окружения BOT_TOKEN или добавьте токен в .env файл")
+    exit(1)
+
 DATA_FILE = Path("megabot_data.json")
 
 # ================== Данные ==================
